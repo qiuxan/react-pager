@@ -22,12 +22,30 @@ interface PagerProps {
 
 const Pager = (props: PagerProps) => {
     console.log(props)
+    const totalPageNumber = calculateTotalPages(props)
+    
     return (
     <>
-        <span className='item'>Start</span>
+        <span className={props.current ===1 ?'item disabled':'item'}>Start</span>
+        <span className={props.current ===1 ?'item disabled':'item'}>Previous</span>
+
+        {/* numeric pages */}
+
+        <span className={props.current ===totalPageNumber ?'item disabled':'item'}>Next</span>
+        <span className={props.current ===totalPageNumber ?'item disabled':'item'}>End</span>
+
+        <span>{props.current}</span> / <span>{totalPageNumber}</span>
     </>
   )
 }
 
+/**
+ * calculate the total number of pages
+ * @param {*} props - Total number of items
+*/
+
+function calculateTotalPages(props: PagerProps) {
+    return Math.ceil(props.total! / props.limit!)
+}
 
 export default Pager

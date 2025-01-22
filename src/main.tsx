@@ -5,6 +5,6 @@ import Pager from './components/Pager'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Pager current={3} total={100} limit={10} panelNumber={5} />
+    <Pager current={1} total={100} limit={10} panelNumber={5} />
   </StrictMode>,
 )
