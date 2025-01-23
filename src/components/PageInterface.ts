@@ -1,5 +1,5 @@
 export interface PagerProps {
-    current?: number;
+    current: number;
     total?: number;
     limit?: number;
     panelNumber?: number;

@@ -18,7 +18,6 @@ import { PagerProps } from './PageInterface'
 
 
 const Pager = (props: PagerProps) => {
-    console.log(props)
     const totalPageNumber = calculateTotalPages(props)
     
     return (
@@ -26,19 +25,37 @@ const Pager = (props: PagerProps) => {
         <span 
             className={props.current ===1 ?'item disabled':'item'}
             onClick={() => {
-                if(props.current === 1) return;
-
-                props.onPageChange&& props.onPageChange(1)
+                toPage(1, props)
             }}
         >
             Start
         </span>
-        <span className={props.current ===1 ?'item disabled':'item'}>Previous</span>
+        <span 
+            className={props.current ===1 ?'item disabled':'item'}
+            onClick={() => {
+                toPage((props.current! - 1)<1?1:props.current! -1, props)
+            }}
+        >
+            Previous
+        </span>
 
         {/* numeric pages */}
 
-        <span className={props.current ===totalPageNumber ?'item disabled':'item'}>Next</span>
-        <span className={props.current ===totalPageNumber ?'item disabled':'item'}>End</span>
+        <span 
+            className={props.current ===totalPageNumber ?'item disabled':'item'}
+            onClick={() => {
+                toPage((props.current! + 1)>totalPageNumber?totalPageNumber:props.current! +1, props)
+            }}
+        >
+            Next
+        </span>
+        <span 
+            className={props.current ===totalPageNumber ?'item disabled':'item'}
+            onClick={() => {
+                toPage(totalPageNumber, props)
+            }}
+        >
+            End</span>
 
         <span className='current'>{props.current}</span> / <span>{totalPageNumber}</span>
     </>
