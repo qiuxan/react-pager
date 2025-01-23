@@ -1,5 +1,6 @@
 import React from 'react'
 import './Pager.css'
+import { PagerProps } from './PageInterface'
 
 /**
  * Pager component
@@ -8,17 +9,13 @@ import './Pager.css'
  * 2. total: number - Total number of items
  * 3. limit: number - Number of items per page
  * 4. panelNumber: number - The max number of page numbers to show
+ * 5. onPageChange: function - Callback function when page number is clicked
  * 
  
 */ 
 
 
-interface PagerProps {
-    current?: number;
-    total?: number;
-    limit?: number;
-    panelNumber?: number;
-}
+
 
 const Pager = (props: PagerProps) => {
     console.log(props)
@@ -26,7 +23,16 @@ const Pager = (props: PagerProps) => {
     
     return (
     <>
-        <span className={props.current ===1 ?'item disabled':'item'}>Start</span>
+        <span 
+            className={props.current ===1 ?'item disabled':'item'}
+            onClick={() => {
+                if(props.current === 1) return;
+
+                props.onPageChange&& props.onPageChange(1)
+            }}
+        >
+            Start
+        </span>
         <span className={props.current ===1 ?'item disabled':'item'}>Previous</span>
 
         {/* numeric pages */}
@@ -34,10 +40,18 @@ const Pager = (props: PagerProps) => {
         <span className={props.current ===totalPageNumber ?'item disabled':'item'}>Next</span>
         <span className={props.current ===totalPageNumber ?'item disabled':'item'}>End</span>
 
-        <span>{props.current}</span> / <span>{totalPageNumber}</span>
+        <span className='current'>{props.current}</span> / <span>{totalPageNumber}</span>
     </>
   )
 }
+
+function toPage(target: number, props: PagerProps) {
+    if(target === props.current) return;
+
+    props.onPageChange&& props.onPageChange(target)
+}
+
+
 
 /**
  * calculate the total number of pages
@@ -45,7 +59,9 @@ const Pager = (props: PagerProps) => {
 */
 
 function calculateTotalPages(props: PagerProps) {
-    return Math.ceil(props.total! / props.limit!)
+    const total = props.total ?? 0;
+    const limit = props.limit ?? 1;
+    return Math.ceil(total / limit);
 }
 
 export default Pager
