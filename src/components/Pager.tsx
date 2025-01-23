@@ -19,6 +19,23 @@ import { PagerProps } from './PageInterface'
 
 const Pager = (props: PagerProps) => {
     const totalPageNumber = calculateTotalPages(props)
+
+    const minPageNumber = getMinPageNumber(props);
+    const maxPageNumber = getMaxPageNumber(minPageNumber,totalPageNumber,props);
+
+    const pageNumbers = [];
+    for(let i = minPageNumber; i <= maxPageNumber; i++) {
+        pageNumbers.push(
+            <span 
+                key={i} 
+                className= {i === props.current ?"item active":"item" }
+                onClick={() => {
+                    toPage(i, props)
+                }}
+            >
+                {i}
+            </span>);
+    }
     
     return (
     <>
@@ -39,7 +56,7 @@ const Pager = (props: PagerProps) => {
             Previous
         </span>
 
-        {/* numeric pages */}
+        {pageNumbers}
 
         <span 
             className={props.current ===totalPageNumber ?'item disabled':'item'}
@@ -61,6 +78,12 @@ const Pager = (props: PagerProps) => {
     </>
   )
 }
+/**
+ * Navigate to the target page
+ * @param {*} target - Target page number
+ * @param {*} props - Component props
+ * 
+*/
 
 function toPage(target: number, props: PagerProps) {
     if(target === props.current) return;
@@ -68,6 +91,37 @@ function toPage(target: number, props: PagerProps) {
     props.onPageChange&& props.onPageChange(target)
 }
 
+/**
+ * Get the maximum page number
+ * @param {*} props - Component props
+*/
+
+function getMinPageNumber(props: PagerProps) {
+    let min = props.current - Math.floor(props.panelNumber! / 2);
+
+    if(min < 1) {
+        min = 1;
+    }
+
+    return min;
+
+}  
+
+/**
+ * Get the maximum page number
+ * @param {*} min - Minimum page number
+ * @param {*} pageNumber - Total number of pages
+ * @param {*} props - Component props
+*/
+
+function getMaxPageNumber(min:number,pageNumber:number,props:PagerProps) {
+    let max = min + props.panelNumber! - 1;
+    if(max > pageNumber) {
+        max = pageNumber;
+    }
+    return max;
+
+}
 
 
 /**

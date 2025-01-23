@@ -12,6 +12,13 @@
     cursor: not-allowed;
 }
 
+.item.active{
+    border: none;
+    color: #f40;
+    cursor: auto;
+}
+
 .current{
     margin-left: 10px;
 }
+
