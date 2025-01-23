@@ -20,6 +20,9 @@ import { PagerProps } from './PageInterface'
 const Pager = (props: PagerProps) => {
     const totalPageNumber = calculateTotalPages(props)
 
+    if(totalPageNumber === 0) {
+        return null;
+    }
     const minPageNumber = getMinPageNumber(props);
     const maxPageNumber = getMaxPageNumber(minPageNumber,totalPageNumber,props);
 
